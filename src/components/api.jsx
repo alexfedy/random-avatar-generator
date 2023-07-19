@@ -117,7 +117,7 @@ const API = () => {
             <div className="">
               <select
                 data-te-select-init
-                className="bg-gray-50 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                className="bg-gray-50 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-black"
                 onChange={handleChange}
                 name="style"
                 value={inputs.style}
@@ -146,7 +146,7 @@ const API = () => {
             </div>
             <div className="">
               <input
-                className="bg-gray-50 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500"
+                className="bg-gray-50 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-black"
                 id="inline-password"
                 type="text"
                 name="name"
