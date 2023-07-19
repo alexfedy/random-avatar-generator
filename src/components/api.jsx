@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import react from "@astrojs/react";
+import randomData from "./randomData";
 
 const template_url = "https://api.dicebear.com/6.x";
 
@@ -12,15 +13,17 @@ const API = () => {
   });
 
   useEffect(() => {
-    setSource(
-      template_url +
-        "/" +
-        inputs.style +
-        "/svg?seed=" +
-        inputs.name +
-        "&backgroundColor=" +
-        inputs.background.replace("#", "")
-    );
+    let randomUrl = generateRandomUrl();
+    setSource(randomUrl);
+    // setSource(
+    //   template_url +
+    //     "/" +
+    //     inputs.style +
+    //     "/svg?seed=" +
+    //     inputs.name +
+    //     "&backgroundColor=" +
+    //     inputs.background.replace("#", "")
+    // );
   }, []);
 
   //form data
@@ -42,6 +45,50 @@ const API = () => {
         "&backgroundColor=" +
         inputs.background.replace("#", "")
     );
+  };
+
+  const generateRandom = (e) => {
+    e.preventDefault();
+    let randomUrl = generateRandomUrl();
+    setSource(randomUrl);
+  };
+
+  function generateRandomUrl() {
+    let style =
+      randomData.style[Math.floor(Math.random() * randomData.style.length)];
+    let seed = generateRandomString(Math.floor(Math.random() * 10));
+    let color =
+      randomData.color[Math.floor(Math.random() * randomData.color.length)];
+    setInputs((values) => ({
+      ...values,
+      style: style,
+      name: seed,
+      background: color,
+    }));
+    return (
+      "https://api.dicebear.com/6.x/" +
+      style +
+      "/svg?seed=" +
+      seed +
+      "&backgroundColor=" +
+      color.replace("#", "")
+    );
+  }
+
+  const generateRandomString = (length) => {
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    const charactersLength = characters.length;
+    let result = "";
+
+    // Create an array of 32-bit unsigned integers
+    const randomValues = new Uint32Array(length);
+
+    // Generate random values
+    window.crypto.getRandomValues(randomValues);
+    randomValues.forEach((value) => {
+      result += characters.charAt(value % charactersLength);
+    });
+    return result;
   };
 
   return (
@@ -109,8 +156,8 @@ const API = () => {
               />
             </div>
           </div>
-          <div className="">
-            <div className="">
+          <div>
+            <div className="flex gap-4 flex-wrap">
               <button
                 type="button"
                 onClick={handleSubmit}
@@ -118,42 +165,44 @@ const API = () => {
               >
                 Generate
               </button>
+              <button
+                type="button"
+                onClick={generateRandom}
+                className="shadow text-white font-bold py-2 px-4 rounded bg-gradient-to-r from-indigo-300 to-purple-400 hover:scale-105 transition"
+              >
+                Random
+              </button>
             </div>
           </div>
         </div>
 
         <div className="w-full flex flex-col gap-12 justify-center items-center p-4">
-          {source && <img src={source} alt="SVG" className="w-full" />}
+          {!source && <p>Image loading...</p>}
           {source && (
-            <a href={source} download className="hover:text-slate-600">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
-                />
-              </svg>
-            </a>
+            <>
+              <img src={source} alt="SVG" className="w-full" />
+              <a href={source} download className="hover:text-slate-600">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  />
+                </svg>
+              </a>
+            </>
           )}
         </div>
       </div>
     </>
   );
-
-  // return (
-  //   // ... consume here
-  //   <>
-  //   <div>    {source && (<img src={source} alt="SVG" className="w-full" />)} </div>
-
-  //   </>
-  // );
 };
 
 export default API;
