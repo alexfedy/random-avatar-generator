@@ -56,7 +56,7 @@ const API = () => {
   function generateRandomUrl() {
     let style =
       randomData.style[Math.floor(Math.random() * randomData.style.length)];
-    let seed = generateRandomString(Math.floor(Math.random() * 10));
+    let seed = generateRandomString(Math.floor(Math.random() * (10 - 1)) + 1);
     let color =
       randomData.color[Math.floor(Math.random() * randomData.color.length)];
     setInputs((values) => ({
